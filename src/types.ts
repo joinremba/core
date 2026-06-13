@@ -3,7 +3,7 @@ export type ApiKeyScope = string;
 export interface ClientOptions {
   /** The API key used to authenticate with the backend. */
   apiKey: string;
-  /** Base URL for the API. Defaults to `https://api.joinremba.com`. */
+  /** Base URL for the API. Defaults to `https://dev.remba.money`. */
   baseUrl?: string;
   /** Request timeout in milliseconds. Defaults to 10_000. */
   timeout?: number;

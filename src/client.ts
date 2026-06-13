@@ -14,7 +14,7 @@ import { NetworkError, AuthenticationError, RateLimitedError, ApiError } from ".
 import { parseApiKey } from "./utils";
 import pkg from "../package.json";
 
-const DEFAULT_BASE_URL = "https://api.joinremba.com";
+const DEFAULT_BASE_URL = "https://dev.remba.money";
 const DEFAULT_TIMEOUT = 10_000;
 const DEFAULT_MAX_RETRIES = 2;
 
@@ -31,7 +31,7 @@ export class HttpClient implements Client {
     const parsed = parseApiKey(options.apiKey);
     this.prefix = parsed.prefix;
     this.apiKey = options.apiKey;
-    this.baseUrl = options.baseUrl || process.env.JOINREMBA_API_URL || DEFAULT_BASE_URL;
+    this.baseUrl = options.baseUrl || (process.env.JOINREMBA_API_URL && process.env.JOINREMBA_API_URL.trim()) || DEFAULT_BASE_URL;
     this.timeout = options.timeout ?? DEFAULT_TIMEOUT;
     this.maxRetries = options.maxRetries ?? DEFAULT_MAX_RETRIES;
   }
