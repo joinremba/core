@@ -20,6 +20,7 @@ export {
   AuthenticationError,
   RateLimitedError,
   ApiKeyFormatError,
+  ApiError,
   ConfigError,
 } from "./errors";
 

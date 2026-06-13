@@ -16,6 +16,7 @@
     "noImplicitOverride": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "resolveJsonModule": true,
     "types": ["bun"]
   },
   "include": ["src"]

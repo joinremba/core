@@ -10,12 +10,15 @@ import type {
   RateLimitCheckResult,
   IdempotencyCheckResult,
 } from "./types";
-import { NetworkError, AuthenticationError, RateLimitedError, ConfigError } from "./errors";
+import { NetworkError, AuthenticationError, RateLimitedError, ApiError } from "./errors";
 import { parseApiKey } from "./utils";
+import pkg from "../package.json";
 
 const DEFAULT_BASE_URL = "https://api.joinremba.com";
 const DEFAULT_TIMEOUT = 10_000;
 const DEFAULT_MAX_RETRIES = 2;
+
+const USER_AGENT = `${pkg.name}/${pkg.version}`;
 
 export class HttpClient implements Client {
   private readonly apiKey: string;
@@ -28,7 +31,7 @@ export class HttpClient implements Client {
     const parsed = parseApiKey(options.apiKey);
     this.prefix = parsed.prefix;
     this.apiKey = options.apiKey;
-    this.baseUrl = options.baseUrl ?? process.env.JOINREMBA_API_URL ?? DEFAULT_BASE_URL;
+    this.baseUrl = options.baseUrl || process.env.JOINREMBA_API_URL || DEFAULT_BASE_URL;
     this.timeout = options.timeout ?? DEFAULT_TIMEOUT;
     this.maxRetries = options.maxRetries ?? DEFAULT_MAX_RETRIES;
   }
@@ -46,7 +49,7 @@ export class HttpClient implements Client {
           const headers: Record<string, string> = {
             Authorization: `Bearer ${this.apiKey}`,
             "Content-Type": "application/json",
-            "User-Agent": "@joinremba/core/0.1.0",
+            "User-Agent": USER_AGENT,
           };
 
           const response = await fetch(url, {
@@ -62,11 +65,16 @@ export class HttpClient implements Client {
             }
             if (response.status === 429) {
               const retryAfter = response.headers.get("Retry-After");
+              if (attempt < this.maxRetries) {
+                const delayMs = retryAfter ? Number(retryAfter) * 1000 : Math.pow(2, attempt) * 200;
+                await new Promise((resolve) => setTimeout(resolve, delayMs));
+                continue;
+              }
               throw new RateLimitedError(retryAfter ? Number(retryAfter) : undefined);
             }
 
             const text = await response.text().catch(() => "Unknown error");
-            throw new ConfigError(`API error ${response.status}: ${text}`);
+            throw new ApiError(response.status, text);
           }
 
           const contentType = response.headers.get("content-type");
@@ -79,10 +87,11 @@ export class HttpClient implements Client {
           clearTimeout(timer);
         }
       } catch (err) {
-        if (err instanceof AuthenticationError || err instanceof RateLimitedError) {
-          throw err;
-        }
-        if (err instanceof ConfigError) {
+        if (
+          err instanceof AuthenticationError ||
+          err instanceof RateLimitedError ||
+          err instanceof ApiError
+        ) {
           throw err;
         }
 

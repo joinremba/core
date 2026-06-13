@@ -1,4 +1,4 @@
-export type ApiKeyScope = "beacon" | "catalog" | "gate";
+export type ApiKeyScope = string;
 
 export interface ClientOptions {
   /** The API key used to authenticate with the backend. */

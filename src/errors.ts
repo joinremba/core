@@ -44,6 +44,18 @@ export class ApiKeyFormatError extends CoreError {
   }
 }
 
+export class ApiError extends CoreError {
+  override readonly status: number;
+  readonly body: string;
+
+  constructor(status: number, body: string) {
+    super(`API error ${status}: ${body}`, "API_ERROR", status);
+    this.name = "ApiError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
 export class ConfigError extends CoreError {
   constructor(message = "Configuration error") {
     super(message, "CONFIG_ERROR");

@@ -7,6 +7,7 @@ import {
   AuthenticationError,
   RateLimitedError,
   ApiKeyFormatError,
+  ApiError,
   ConfigError,
 } from "./errors";
 
@@ -100,6 +101,15 @@ describe("errors", () => {
   test("ConfigError extends CoreError", () => {
     const err = new ConfigError();
     expect(err.code).toBe("CONFIG_ERROR");
+    expect(err).toBeInstanceOf(CoreError);
+  });
+
+  test("ApiError extends CoreError with status and body", () => {
+    const err = new ApiError(404, '{"error":"not found"}');
+    expect(err.code).toBe("API_ERROR");
+    expect(err.status).toBe(404);
+    expect(err.body).toBe('{"error":"not found"}');
+    expect(err.message).toBe('API error 404: {"error":"not found"}');
     expect(err).toBeInstanceOf(CoreError);
   });
 });
