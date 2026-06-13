@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ApiError` class for non-auth/429 HTTP errors (separate from `ConfigError`)
 - AGENTS.md with package architecture and commands
+- `signPayload(payload, secret)` — HMAC-SHA256 hex signing for webhook payloads
+- `verifySignature(payload, signature, secret)` — constant-time signature verification
 
 ### Fixed
 

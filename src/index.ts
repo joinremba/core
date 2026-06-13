@@ -26,6 +26,8 @@ export {
 
 export { parseApiKey, isValidApiKey } from "./utils";
 
+export { signPayload, verifySignature } from "./webhook";
+
 export function createClient(options: ClientOptions): Client {
   return new HttpClient(options);
 }
