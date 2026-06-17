@@ -43,14 +43,14 @@ git checkout -b feature/your-feature-name
 
 ## Development Commands
 
-| Command | Description |
-| ------- | ----------- |
-| `bun test` | Run tests |
-| `bun run typecheck` | TypeScript type checking (`tsc --noEmit`) |
-| `bun run lint` | ESLint |
-| `bun run format` | Prettier |
-| `bun run check` | All checks (lint + format + typecheck + test) |
-| `bun run build` | Build to `dist/` |
+| Command             | Description                                   |
+| ------------------- | --------------------------------------------- |
+| `bun test`          | Run tests                                     |
+| `bun run typecheck` | TypeScript type checking (`tsc --noEmit`)     |
+| `bun run lint`      | ESLint                                        |
+| `bun run format`    | Prettier                                      |
+| `bun run check`     | All checks (lint + format + typecheck + test) |
+| `bun run build`     | Build to `dist/`                              |
 
 ## Code Style
 
@@ -88,16 +88,16 @@ type(scope): description
 
 **Types:**
 
-| Type | Usage |
-| ---- | ----- |
-| `feat` | A new feature |
-| `fix` | A bug fix |
-| `chore` | Maintenance, tooling, dependencies |
-| `docs` | Documentation changes |
-| `test` | Adding or updating tests |
-| `refactor` | Code refactoring |
-| `style` | Formatting, whitespace |
-| `ci` | CI configuration changes |
+| Type       | Usage                              |
+| ---------- | ---------------------------------- |
+| `feat`     | A new feature                      |
+| `fix`      | A bug fix                          |
+| `chore`    | Maintenance, tooling, dependencies |
+| `docs`     | Documentation changes              |
+| `test`     | Adding or updating tests           |
+| `refactor` | Code refactoring                   |
+| `style`    | Formatting, whitespace             |
+| `ci`       | CI configuration changes           |
 
 **Examples:**
 

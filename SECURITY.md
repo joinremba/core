@@ -16,8 +16,8 @@ Only the **latest published version** of @joinremba/core receives security updat
 
 | Version | Supported |
 | ------- | --------- |
-| Latest | Yes |
-| Older | No |
+| Latest  | Yes       |
+| Older   | No        |
 
 ## Security Best Practices
 

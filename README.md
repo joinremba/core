@@ -76,14 +76,15 @@ await remba.ingestSecurity(events);
 
 #### Client options
 
-| Option       | Default                                                                  | Description              |
-| ------------ | ------------------------------------------------------------------------ | ------------------------ |
-| `apiKey`     | required                                                                 | API key for auth         |
-| `baseUrl`    | `JOINREMBA_API_URL` env var or `https://dev.remba.money`                 | API base URL             |
-| `timeout`    | `10_000`                                                                 | Request timeout (ms)     |
-| `maxRetries` | `2`                                                                      | Retries on 429 / network |
+| Option       | Default                                                  | Description              |
+| ------------ | -------------------------------------------------------- | ------------------------ |
+| `apiKey`     | required                                                 | API key for auth         |
+| `baseUrl`    | `JOINREMBA_API_URL` env var or `https://dev.remba.money` | API base URL             |
+| `timeout`    | `10_000`                                                 | Request timeout (ms)     |
+| `maxRetries` | `2`                                                      | Retries on 429 / network |
 
 The client automatically:
+
 - Injects `Authorization: Bearer <apiKey>` and `User-Agent: @joinremba/core/<version>` headers.
 - Retries on network errors / timeouts with exponential back‑off.
 - On `429` respects `Retry-After`, then throws `RateLimitedError`.
@@ -143,20 +144,21 @@ const ok = verifySignature(payload, sig, secret);
 
 All errors extend `CoreError` with a `code` string and optional `status`.
 
-| Class                   | Thrown when                                     |
-| ----------------------- | ----------------------------------------------- |
-| `NetworkError`          | Connection failure or timeout                   |
-| `AuthenticationError`   | `401` response                                  |
-| `RateLimitedError`      | `429` response (after retries exhausted)        |
-| `ApiError`              | Other HTTP error (`err.status` + `err.body`)    |
-| `ApiKeyFormatError`     | `parseApiKey()` malformed key                   |
-| `ConfigError`           | Configuration error at client construction      |
+| Class                 | Thrown when                                  |
+| --------------------- | -------------------------------------------- |
+| `NetworkError`        | Connection failure or timeout                |
+| `AuthenticationError` | `401` response                               |
+| `RateLimitedError`    | `429` response (after retries exhausted)     |
+| `ApiError`            | Other HTTP error (`err.status` + `err.body`) |
+| `ApiKeyFormatError`   | `parseApiKey()` malformed key                |
+| `ConfigError`         | Configuration error at client construction   |
 
 ```ts
 import { AuthenticationError, ApiError } from "@joinremba/core";
 
-try { await remba.verifyKey(); }
-catch (err) {
+try {
+  await remba.verifyKey();
+} catch (err) {
   if (err instanceof AuthenticationError) console.error("Bad key", err.code);
   if (err instanceof ApiError) console.error(`HTTP ${err.status}: ${err.body}`);
 }
@@ -170,17 +172,17 @@ All types are exported from the package index:
 
 ```ts
 import type {
-  Client,                // Interface implemented by HttpClient
-  ClientOptions,         // Options passed to createClient()
-  VerifyKeyResult,       // { valid, projectId, scopes }
-  ConfigEntry,           // { key, value, secret, updatedAt }
-  FeatureFlag,           // { name, enabled, rollout? }
-  LogEvent,              // { timestamp, level, service, message, data? }
-  AuditEvent,            // { timestamp, actor, action, resource, details? }
-  SecurityEvent,         // { timestamp, type, severity, source?, details? }
-  RateLimitCheckResult,  // { allowed, remaining, reset }
-  IdempotencyCheckResult,// { exists, response? }
-  ApiKeyScope,           // string
+  Client, // Interface implemented by HttpClient
+  ClientOptions, // Options passed to createClient()
+  VerifyKeyResult, // { valid, projectId, scopes }
+  ConfigEntry, // { key, value, secret, updatedAt }
+  FeatureFlag, // { name, enabled, rollout? }
+  LogEvent, // { timestamp, level, service, message, data? }
+  AuditEvent, // { timestamp, actor, action, resource, details? }
+  SecurityEvent, // { timestamp, type, severity, source?, details? }
+  RateLimitCheckResult, // { allowed, remaining, reset }
+  IdempotencyCheckResult, // { exists, response? }
+  ApiKeyScope, // string
 } from "@joinremba/core";
 ```
 
@@ -201,9 +203,9 @@ All packages share the same `Client` interface and error hierarchy.
 
 ## Configuration
 
-| Env var               | Used by                    | Default                       |
-| --------------------- | -------------------------- | ----------------------------- |
-| `JOINREMBA_API_URL`   | `createClient()`           | `https://dev.remba.money `    |
+| Env var             | Used by          | Default                    |
+| ------------------- | ---------------- | -------------------------- |
+| `JOINREMBA_API_URL` | `createClient()` | `https://dev.remba.money ` |
 
 ```bash
 export JOINREMBA_API_URL=https://api.joinremba.com
@@ -221,7 +223,9 @@ interface lets consumers write type‑safe wrappers or mocks.
 import type { Client } from "@joinremba/core";
 
 function monitor(client: Client) {
-  client.ingestLogs([{ timestamp: new Date().toISOString(), level: "info", service: "web", message: "started" }]);
+  client.ingestLogs([
+    { timestamp: new Date().toISOString(), level: "info", service: "web", message: "started" },
+  ]);
 }
 ```
 
