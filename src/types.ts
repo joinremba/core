@@ -65,6 +65,11 @@ export interface IdempotencyCheckResult {
   response?: unknown;
 }
 
+export interface PromptEntry {
+  name: string;
+  template: string;
+}
+
 export interface Client {
   /** Verify the API key is valid and return its scopes. */
   verifyKey(): Promise<VerifyKeyResult>;
@@ -98,4 +103,10 @@ export interface Client {
 
   /** Verify an API key server-side. */
   verifyApiKey(key: string): Promise<VerifyKeyResult>;
+
+  /** List remote prompt templates for the project. */
+  listPrompts(): Promise<PromptEntry[]>;
+
+  /** Upsert a prompt template. */
+  upsertPrompt(entry: PromptEntry): Promise<void>;
 }

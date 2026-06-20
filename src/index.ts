@@ -12,6 +12,7 @@ export type {
   RateLimitCheckResult,
   IdempotencyCheckResult,
   ApiKeyScope,
+  PromptEntry,
 } from "./types";
 
 export {

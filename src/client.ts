@@ -9,6 +9,7 @@ import type {
   SecurityEvent,
   RateLimitCheckResult,
   IdempotencyCheckResult,
+  PromptEntry,
 } from "./types";
 import { NetworkError, AuthenticationError, RateLimitedError, ApiError } from "./errors";
 import { parseApiKey } from "./utils";
@@ -157,6 +158,14 @@ export class HttpClient implements Client {
 
   async verifyApiKey(key: string): Promise<VerifyKeyResult> {
     return this.request<VerifyKeyResult>("POST", "/v1/gate/verify-key", { key });
+  }
+
+  async listPrompts(): Promise<PromptEntry[]> {
+    return this.request<PromptEntry[]>("GET", "/v1/prompts");
+  }
+
+  async upsertPrompt(entry: PromptEntry): Promise<void> {
+    await this.request("PUT", "/v1/prompts", entry);
   }
 
   getKeyPrefix(): "api_core_live" | "api_core_test" {
