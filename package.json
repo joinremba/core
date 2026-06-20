@@ -1,6 +1,6 @@
 {
   "name": "@joinremba/core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Shared SDK for Remba Infrastructure — HTTP client, types, and API key utilities.",
   "type": "module",
   "main": "./src/index.ts",
